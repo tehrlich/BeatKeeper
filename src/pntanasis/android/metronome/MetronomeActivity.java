@@ -54,7 +54,33 @@ public class MetronomeActivity extends Activity implements GestureDetector.OnGes
       
     }
     
+    public void onPause(){
+    	super.onPause();
+	    Log.d("Gesture Example", "paused");    	
+		metroTask.stop();
+		metroTask = new MetronomeAsyncTask();
+		Runtime.getRuntime().gc();
+    }
     
+    public void onStop(){
+    	super.onStop();
+	    Log.d("Gesture Example", "stopped");    	
+		metroTask.stop();
+		metroTask = new MetronomeAsyncTask();
+		Runtime.getRuntime().gc();
+    }    
+    
+    public void onDestroy() {
+    	super.onDestroy();  // Always call the superclass
+	    Log.d("Gesture Example", "destroyed");
+    	metroTask.stop();
+		metroTask = new MetronomeAsyncTask();
+		Runtime.getRuntime().gc();
+        // Stop method tracing that the activity started during onCreate()
+        android.os.Debug.stopMethodTracing();
+    }
+        
+   
     private class MetronomeAsyncTask extends AsyncTask<Void,Void,String> {
     	Metronome metronome;
     	
